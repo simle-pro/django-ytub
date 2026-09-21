@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width: 500px; margin: 40px auto; padding: 24px; background-color: #1f1f1f; border-radius: 12px; border: 1px solid #333;">
+    <h2 style="margin-bottom: 20px; font-size: 22px;">Загрузка нового видео</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div style="margin-bottom: 16px;">
+            <label style="display: block; margin-bottom: 6px; font-size: 14px; color: #aaa;">Название видео</label>
+            <input type="text" name="title" required style="width: 100%; padding: 10px; background-color: #121212; border: 1px solid #333; border-radius: 8px; color: #fff; outline: none;">
+        </div>
+
+        <div style="margin-bottom: 16px;">
+            <label style="display: block; margin-bottom: 6px; font-size: 14px; color: #aaa;">Описание</label>
+            <textarea name="description" rows="3" style="width: 100%; padding: 10px; background-color: #121212; border: 1px solid #333; border-radius: 8px; color: #fff; outline: none; resize: vertical;"></textarea>
+        </div>
+
+        <div style="margin-bottom: 16px;">
+            <label style="display: block; margin-bottom: 6px; font-size: 14px; color: #aaa;">Превью (картинка)</label>
+            <input type="file" name="thumbnail" accept="image/*" style="width: 100%; color: #aaa;">
+        </div>
+
+        <div style="margin-bottom: 16px;">
+            <label style="display: block; margin-bottom: 6px; font-size: 14px; color: #aaa;">Видеофайл</label>
+            <input type="file" name="video_file" accept="video/*" required style="width: 100%; color: #aaa;">
+        </div>
+
+        <div style="margin-bottom: 16px;">
+            <label style="display: block; margin-bottom: 6px; font-size: 14px; color: #aaa;">Категория</label>
+            <select name="category" style="width: 100%; padding: 10px; background-color: #121212; border: 1px solid #333; border-radius: 8px; color: #fff; outline: none;">
+                <option value="">Без категории</option>
+                {% for cat in categories %}
+                    <option value="{{ cat.id }}">{{ cat.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 6px; font-size: 14px; color: #aaa;">Выбор канала</label>
+            <select name="channel" required style="width: 100%; padding: 10px; background-color: #121212; border: 1px solid #333; border-radius: 8px; color: #fff; outline: none;">
+                {% for ch in user_channels %}
+                    <option value="{{ ch.id }}">{{ ch.title }}</option>
+                {% empty %}
+                    <option value="">Сначала создайте канал!</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button type="submit" style="width: 100%; padding: 10px; background-color: #3ea6ff; border: none; border-radius: 20px; color: #0f0f0f; font-weight: bold; cursor: pointer;">
+            Опубликовать
+        </button>
+    </form>
+</div>
+{% endblock %}

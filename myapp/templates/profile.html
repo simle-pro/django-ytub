@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width: 900px; margin: 0 auto;">
+    <!-- Шапка профиля -->
+    <div style="display: flex; align-items: center; gap: 20px; padding: 20px 0; border-bottom: 1px solid #272727;">
+        <div style="width: 80px; height: 80px; border-radius: 50%; background-color: #272727; display: flex; align-items: center; justify-content: center; font-size: 36px;">
+            👤
+        </div>
+        <div>
+            <h1 style="font-size: 26px;">{{ profile_user.username }}</h1>
+            <p style="color: #aaa; margin-top: 4px;">Мой аккаунт</p>
+        </div>
+    </div>
+
+    <!-- Мои каналы -->
+    <div style="margin-top: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <h2>Мои каналы</h2>
+            <a href="{% url 'create_channel' %}" style="background-color: #3ea6ff; color: #0f0f0f; text-decoration: none; padding: 8px 16px; border-radius: 18px; font-weight: 600; font-size: 14px;">+ Создать канал</a>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px;">
+            {% for channel in channels %}
+                <a href="{% url 'channel_detail' channel.id %}" style="display: flex; align-items: center; gap: 12px; background-color: #1f1f1f; padding: 16px; border-radius: 12px; text-decoration: none; color: #fff; border: 1px solid #333;">
+                    {% if channel.avatar %}
+                        <img src="{{ channel.avatar.url }}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
+                    {% else %}
+                        <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #333; display: flex; align-items: center; justify-content: center;">📹</div>
+                    {% endif %}
+                    <div>
+                        <strong style="font-size: 16px; display: block;">{{ channel.title }}</strong>
+                        <span style="font-size: 12px; color: #aaa;">Перейти на канал →</span>
+                    </div>
+                </a>
+            {% empty %}
+                <p style="color: #aaa;">У вас пока нет созданных каналов.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

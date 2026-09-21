@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width: 500px; margin: 40px auto; padding: 24px; background-color: #1f1f1f; border-radius: 12px; border: 1px solid #333;">
+    <h2 style="margin-bottom: 20px; font-size: 22px;">Создание канала</h2>
+
+    {% if error %}
+        <div style="background-color: #5a1a1a; color: #ff8888; padding: 10px; border-radius: 8px; margin-bottom: 16px; font-size: 14px;">
+            {{ error }}
+        </div>
+    {% endif %}
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div style="margin-bottom: 16px;">
+            <label style="display: block; margin-bottom: 6px; font-size: 14px; color: #aaa;">Название канала</label>
+            <input type="text" name="title" required style="width: 100%; padding: 10px; background-color: #121212; border: 1px solid #333; border-radius: 8px; color: #fff; outline: none;">
+        </div>
+
+        <div style="margin-bottom: 16px;">
+            <label style="display: block; margin-bottom: 6px; font-size: 14px; color: #aaa;">Описание канала</label>
+            <textarea name="description" rows="4" style="width: 100%; padding: 10px; background-color: #121212; border: 1px solid #333; border-radius: 8px; color: #fff; outline: none; resize: vertical;"></textarea>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 6px; font-size: 14px; color: #aaa;">Аватарка канала</label>
+            <input type="file" name="avatar" accept="image/*" required style="width: 100%; color: #aaa;">
+        </div>
+
+        <button type="submit" style="width: 100%; padding: 10px; background-color: #3ea6ff; border: none; border-radius: 20px; color: #0f0f0f; font-weight: bold; cursor: pointer;">
+            Создать канал
+        </button>
+    </form>
+</div>
+{% endblock %}

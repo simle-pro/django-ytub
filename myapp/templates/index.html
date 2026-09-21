@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block main_layout %}
+    <!-- Основной блок с видео (Слева) -->
+    <div class="main-content">
+        <h2 style="margin-bottom: 20px;">Видео</h2>
+        <div class="video-grid">
+            {% for video in videos %}
+                <a href="{% url 'watch' video.id %}" class="video-card">
+                    <div class="thumbnail-box">
+                        {% if video.thumbnail %}
+                            <img src="{{ video.thumbnail.url }}" alt="{{ video.title }}">
+                        {% else %}
+                            <div style="display:flex; align-items:center; justify-content:center; height:100%; color:#aaa;">Нет превью</div>
+                        {% endif %}
+                    </div>
+                    <div class="video-info">
+                        {% if video.channel.avatar %}
+                            <img src="{{ video.channel.avatar.url }}" class="channel-avatar" alt="Avatar">
+                        {% else %}
+                            <div class="channel-avatar" style="text-align:center; line-height:36px;">📹</div>
+                        {% endif %}
+                        <div class="video-details">
+                            <h3>{{ video.title }}</h3>
+                            <p>{{ video.channel.title }}</p>
+                            <p><small>{{ video.category.name|default:"Без категории" }} • {{ video.views_count }} просмотров</small></p>
+                        </div>
+                    </div>
+                </a>
+            {% empty %}
+                <p style="color: #aaa;">Видео не найдены.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Блок категорий (Справа) -->
+    <aside style="width: 250px; padding: 20px; border-left: 1px solid #272727; background-color: #0f0f0f;">
+        <h3 style="font-size: 16px; margin-bottom: 12px; color: #fff;">Категории</h3>
+        <ul style="list-style: none; display: flex; flex-direction: column; gap: 8px;">
+            <li>
+                <a href="{% url 'index' %}" style="display: block; padding: 8px 12px; border-radius: 8px; text-decoration: none; color: #fff; background-color: {% if not request.GET.category %}#272727{% else %}transparent{% endif %};">
+                    Все категории
+                </a>
+            </li>
+            {% for cat in categories %}
+                <li>
+                    <!-- Передаем ID категории в параметр category -->
+                    <a href="{% url 'index' %}?category={{ cat.id }}" style="display: block; padding: 8px 12px; border-radius: 8px; text-decoration: none; color: {% if request.GET.category == cat.id|stringformat:'i' %}#fff{% else %}#aaa{% endif %}; background-color: {% if request.GET.category == cat.id|stringformat:'i' %}#272727{% else %}transparent{% endif %};">
+                        {{ cat.name }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </aside>
+{% endblock %}
